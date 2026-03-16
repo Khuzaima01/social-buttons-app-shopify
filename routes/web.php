@@ -1,14 +1,19 @@
 <?php
 
+use App\Http\Controllers\ShopifyController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
-Route::inertia('/', 'welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
+Route::middleware('shop.resolve')->group(function () {
+    Route::get('/', [ShopifyController::class, 'index'])->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('whatsapp-settings', function () {
+        return 'Whatsapp Settings';
+    });
+
+    // Route::middleware(['auth', 'verified'])->group(function () {
+    //     Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    // });
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
